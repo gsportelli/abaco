@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Activation</title>
+    <style>
+        #container {
+            display: grid;
+            grid-template-columns: repeat(6, 0.1fr); /* Creates 6 columns */
+            grid-template-rows: repeat(10, 60px); /* 10 rows of 100px height each */
+            grid-auto-flow: column; /* Fill the grid by column */
+            gap: 5px; /* Space between squares */
+        }
+        .square {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border: 1px solid black;
+        }
+        .active {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- Squares will be added here by JavaScript -->
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+    <script>
+        function makeSquares() {
+            const container = $("#container");
+            for (let i = 1; i <= 60; i++) {
+                container.append($(`<div class="square" id="square-${i.toString().padStart(3,'0')}">${i}</div>`));
+            }
+        }
+        $(document).ready(function() {
+            makeSquares();
+            $(".square").click(function() {
+                const are_all_inactive = $(".square").toArray().every(square => !square.classList.contains("active"));
+                if (are_all_inactive) {
+                    if ($(this).text() == 1)
+                        $(this).addClass("active");
+                } else {
+                    if ($(this).hasClass("active")) {
+                        const is_next_active = $(this).next().hasClass("active");
+                        if (!is_next_active) {
+                            $(this).removeClass("active");
+                        }
+                    } else {
+                        const is_previous_active = $(this).prev().hasClass("active");
+                        if (is_previous_active) {
+                            $(this).addClass("active");
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
