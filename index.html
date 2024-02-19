@@ -7,7 +7,7 @@
     <style>
         #container {
             display: grid;
-            grid-template-columns: repeat(6, 0.1fr); /* Creates 6 columns */
+            grid-template-columns: repeat(200, 0.1fr); /* Creates 6 columns */
             grid-template-rows: repeat(10, 60px); /* 10 rows of 100px height each */
             grid-auto-flow: column; /* Fill the grid by column */
             gap: 5px; /* Space between squares */
@@ -35,14 +35,17 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script>
-        function makeSquares() {
+        function makeSquares(max_number) {
             const container = $("#container");
-            for (let i = 1; i <= 60; i++) {
+            for (let i = 1; i <= max_number; i++) {
                 container.append($(`<div class="square" id="square-${i.toString().padStart(3,'0')}">${i}</div>`));
             }
         }
         $(document).ready(function() {
-            makeSquares();
+            const params = new URLSearchParams(window.location.search);
+            const param_max = parseInt(params.get("max"), 10) || 60;
+            console.log(param_max);
+            makeSquares(param_max);
             $(".square").click(function() {
                 const are_all_inactive = $(".square").toArray().every(square => !square.classList.contains("active"));
                 if (are_all_inactive) {
